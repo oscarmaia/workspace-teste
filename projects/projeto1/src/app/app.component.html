@@ -1,0 +1,35 @@
+<h1>Projeto 1</h1>
+<div class="container">
+  <div class="row">
+    <form [formGroup]="form">
+      <label>Username</label>
+      <el-input-text
+        formControlName="username"
+        tamanho="col-4"
+        [onErrorMessage]="'Mensagem de erro'"
+      />
+      <label>Email</label>
+      <el-input-text
+        formControlName="email"
+        tamanho="col-4"
+        [onErrorMessage]="'Mensagem de erro'"
+      />
+      <label>Senha</label>
+      <el-input-text
+        formControlName="password"
+        tamanho="col-4"
+        [onErrorMessage]="'Mensagem de erro'"
+      />
+      <label>Senha input Angular</label>
+      <input formControlName="password" type="text" />
+      <el-btn
+        btnType="submit"
+        (onBtnClick)="print()"
+        text="Enviar"
+        btnClass="btn-primary"
+      ></el-btn>
+    </form>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
