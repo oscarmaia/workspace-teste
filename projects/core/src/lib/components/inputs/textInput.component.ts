@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, forwardRef, inject } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
 import {
   ControlValueAccessor,
-  FormControl,
   NG_VALUE_ACCESSOR,
+  FormControl,
   ReactiveFormsModule,
 } from '@angular/forms';
 
@@ -15,9 +15,9 @@ type Tamanho = 'col-4' | 'col-6' | 'col-8' | 'col-12';
   imports: [CommonModule, ReactiveFormsModule],
   template: `
     <div [ngClass]="tamanho">
-      <input type="text" class="form-control" [formControl]="formControl" />
+      <input type="text" class="form-control" [formControl]="control" />
       <span [ngClass]="temErro ? 'text-danger' : ''">{{
-        this.formControl.value
+        this.control.value
       }}</span>
     </div>
   `,
@@ -33,27 +33,24 @@ export class TextInputComponent implements ControlValueAccessor {
   @Input() tamanho: Tamanho = 'col-4';
   @Input() onErrorMessage: string = '';
   @Input() temErro: boolean = false;
-  value: string = '';
-  formControl: FormControl = new FormControl();
-  onChange: any = () => {};
-  onTouch: any = () => {};
+  control = new FormControl();
 
-  writeValue(value: any): void {
-    this.formControl.setValue(value);
-    this.onChange(value);
-    this.onTouch();
+  onChange: any = () => {};
+  onTouched: any = () => {};
+
+  writeValue(obj: any): void {
+    this.control.setValue(obj, { emitEvent: false });
   }
 
   registerOnChange(fn: any): void {
-    this.onChange = fn;
-    console.log('tocou no input');
+    this.control.valueChanges.subscribe(fn);
   }
 
   registerOnTouched(fn: any): void {
-    this.onTouch = fn;
+    this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
-    isDisabled ? this.formControl.disable() : this.formControl.enable();
+  setDisabledState?(isDisabled: boolean): void {
+    isDisabled ? this.control.disable() : this.control.enable();
   }
 }
